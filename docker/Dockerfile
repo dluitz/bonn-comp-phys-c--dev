@@ -22,6 +22,7 @@ RUN apt-get install hdf5-tools -y
 RUN apt-get install hdf5-helpers -y
 RUN apt-get install libgsl-dev -y
 RUN apt-get install libcatch2-dev -y
+RUN apt-get install parallel -y
 
 RUN useradd -ms /bin/bash user # openmpi does not like to be executed as root
 
@@ -40,7 +41,7 @@ RUN cd /opt/HighFive && git clone --recursive https://github.com/highfive-devs/h
 RUN cd /opt/HighFive
 RUN cd /opt/HighFive/highfive && cmake cmake -DCMAKE_INSTALL_PREFIX=build/install -B build .
 RUN cd /opt/HighFive/highfive && cmake --build build --parallel
-RUN cd /opt/HighFive/highfive && cmake --install build``
+RUN cd /opt/HighFive/highfive && cmake --install build
 RUN rm -rf /opt/HighFive/highfive/.git
 
 
