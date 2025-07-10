@@ -23,6 +23,7 @@ RUN apt-get install hdf5-helpers -y
 RUN apt-get install libgsl-dev -y
 RUN apt-get install libcatch2-dev -y
 RUN apt-get install parallel -y
+RUN apt-get install dmtcp -y
 
 RUN useradd -ms /bin/bash user # openmpi does not like to be executed as root
 
