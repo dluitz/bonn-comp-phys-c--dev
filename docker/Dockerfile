@@ -23,7 +23,7 @@ RUN apt-get install hdf5-helpers -y
 RUN apt-get install libgsl-dev -y
 RUN apt-get install libcatch2-dev -y
 RUN apt-get install parallel -y
-RUN git clone 2.6 https://github.com/dmtcp/dmtcp.git /opt/dmtcp && \
+RUN git clone https://github.com/dmtcp/dmtcp.git /opt/dmtcp && \
     cd /opt/dmtcp && \
     ./configure && \
     make -j$(nproc) && \
