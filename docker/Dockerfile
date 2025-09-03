@@ -43,15 +43,6 @@ RUN apt-get install parallel -y
 #     build-essential autoconf automake libtool gdb
 
 
-# Clean APT and fix broken installs
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends build-essential gfortran || true && \
-    apt-get -f install -y
-
-# Install OpenMPI and libc headers
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-    openmpi-bin libopenmpi-dev libc6-dev
-
 USER root
 
 # Install DMTCP
@@ -100,8 +91,7 @@ RUN ./configure --with-scalar-type=complex \
                 --with-fc=0 \
                 --with-cmake \
                 --with-openmp=1 \
-                --with-mpi=1 \
-                --with-mpicc=mpicc \
+                --download-mpi \
                 --prefix=$PETSC_DIR/complex && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex all -j$(nproc) && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex check
@@ -123,8 +113,7 @@ RUN ./configure --with-scalar-type=real \
                 --with-fc=0 \
                 --with-cmake \
                 --with-openmp=1 \
-                --with-mpi=1 \
-                --with-mpicc=mpicc \
+                --download-mpi \
                 --prefix=$PETSC_DIR/real && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real all -j$(nproc) && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real check
