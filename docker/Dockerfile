@@ -51,18 +51,18 @@ RUN cd /opt/HighFive/highfive && cmake --build build --parallel
 RUN cd /opt/HighFive/highfive && cmake --install build
 RUN rm -rf /opt/HighFive/highfive/.git
 
-## Install system dependencies
-RUN apt-get update && apt-get install -y wget gnupg curl lsb-release software-properties-common
-
-## Add Intel GPG key securely
-RUN curl -fsSL https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor -o /usr/share/keyrings/intel-oneapi.gpg
-
-## Add Intel oneAPI APT repository
-RUN echo "deb [signed-by=/usr/share/keyrings/intel-oneapi.gpg] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/intel-oneapi.list
-
-## Install MKL (runtime + dev headers)
-RUN apt-get update && apt-cache search oneapi || true
-RUN apt-get update && apt-get install -y intel-oneapi-mkl intel-oneapi-mkl-devel
+### Install system dependencies
+#RUN apt-get update && apt-get install -y wget gnupg curl lsb-release #software-properties-common
+#
+### Add Intel GPG key securely
+#RUN curl -fsSL https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor -o /usr/share/keyrings/intel-oneapi.gpg
+#
+### Add Intel oneAPI APT repository
+#RUN echo "deb [signed-by=/usr/share/keyrings/intel-oneapi.gpg] https://apt.repos.intel.com/oneapi all main" > /etc/apt/sources.list.d/intel-oneapi.list
+#
+### Install MKL (runtime + dev headers)
+#RUN apt-get update && apt-cache search oneapi || true
+#RUN apt-get update && apt-get install -y intel-oneapi-mkl intel-oneapi-mkl-devel
 
 
 
