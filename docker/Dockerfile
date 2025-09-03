@@ -17,8 +17,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 USER root
 
 # Install DMTCP
-RUN git clone https://github.com/dmtcp/dmtcp.git $LIBS/dmtcp && \
-    cd $LIBS/dmtcp && ./configure && make -j$(nproc) && make install
+RUN echo $LIBS/dmtcp
+RUN git clone https://github.com/dmtcp/dmtcp.git $LIBS/dmtcp 
+RUN cd $LIBS/dmtcp && ./configure && make && make install
 
 # Install Eigen
 RUN mkdir -p $LIBS/Eigen && \
