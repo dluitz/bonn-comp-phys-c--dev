@@ -49,7 +49,7 @@ USER root
 
 # Install DMTCP
 RUN which gcc
-RUN whic g++
+RUN which g++
 RUN echo $LIBS/dmtcp
 RUN git clone https://github.com/dmtcp/dmtcp.git $LIBS/dmtcp 
 WORKDIR $LIBS/dmtcp  
