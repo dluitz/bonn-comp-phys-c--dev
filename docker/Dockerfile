@@ -14,10 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openmpi-bin libopenmpi-dev libc++-19-dev libomp-19-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# Create non-root user for MPI
-RUN useradd -ms /bin/bash user
-USER user
-WORKDIR /home/user
+USER root
 
 # Install DMTCP
 RUN git clone https://github.com/dmtcp/dmtcp.git $LIBS/dmtcp && \
@@ -99,3 +96,8 @@ RUN ./configure --prefix=$SLEPC_DIR/real && \
 # Fix permissions
 USER root
 RUN chown -R user:user $LIBS && chown -R user:user /home/user
+
+# Create non-root user for MPI
+RUN useradd -ms /bin/bash user
+USER user
+WORKDIR /home/user
