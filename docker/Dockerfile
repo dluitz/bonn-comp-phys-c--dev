@@ -12,8 +12,6 @@ RUN apt-get upgrade -y
 RUN apt-get update -y
 
 
-RUN apt-get upgrade -y
-RUN apt-get update -y
 RUN apt-get install gdb -y
 RUN apt-get install gcc -y
 RUN apt-get install g++ -y
@@ -35,6 +33,7 @@ RUN apt-get install hdf5-helpers -y
 RUN apt-get install libgsl-dev -y
 RUN apt-get install libcatch2-dev -y
 RUN apt-get install parallel -y
+RUN apt-get install build-essential autoconf automake libtool -y
 # Install system packages
 # RUN apt-get update && apt-get install -y --no-install-recommends \
 #     gdb valgrind vim neovim git cmake wget curl \
@@ -50,8 +49,10 @@ USER root
 # Install DMTCP
 RUN which gcc
 RUN which g++
+RUN mkdir -p $LIBS/dmtcp
 RUN echo $LIBS/dmtcp
 RUN git clone https://github.com/dmtcp/dmtcp.git $LIBS/dmtcp 
+RUN chmod -R 777 $LIBS/dmtcp
 WORKDIR $LIBS/dmtcp  
 RUN ./configure --verbose 
 RUN make 
