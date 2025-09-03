@@ -42,7 +42,15 @@ RUN apt-get install parallel -y
 # RUN apt-get update && apt-get install -y --no-install-recommends \
 #     build-essential autoconf automake libtool gdb
 
-RUN apt-get install openmpi-bin libopenmpi-dev libc6-dev -y
+
+# Clean APT and fix broken installs
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends build-essential gfortran || true && \
+    apt-get -f install -y
+
+# Install OpenMPI and libc headers
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    openmpi-bin libopenmpi-dev libc6-dev
 
 USER root
 
