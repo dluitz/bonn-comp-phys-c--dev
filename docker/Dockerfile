@@ -68,60 +68,38 @@ RUN rm -rf /opt/HighFive/highfive/.git
 
 ### SLEPC/PETSC
 ### options
-RUN export libs=/opt
-RUN OPTFLAGS="-O3 -march=native -mtune=native"
+ENV LIBS=/opt
+ENV OPTFLAGS="-O3 -march=native -mtune=native"
 
-RUN export MKLROOT="/opt/intel/oneapi/mkl/latest"
 
 ### clone petsc
-RUN export PETSC_DIR=$libs/petsc
-RUN cd $libs
-RUN git clone -b release https://gitlab.com/petsc/petsc.git petsc
-RUN cd $PETSC_DIR
-# git checkout main
-RUN git checkout v3.23.4
+ENV PETSC_DIR=$libs/petsc
+RUN mkdir -p $LIBS && cd $LIBS && git clone -b release https://gitlab.com/petsc/petsc.git petsc && cd $PETSC_DIR && git checkout v3.23.4
 
 
 ### clone slepc
-RUN export SLEPC_DIR=$libs/slepc
-RUN cd $libs
-RUN git clone https://gitlab.com/slepc/slepc slepc
-RUN cd $SLEPC_DIR
-# git checkout main
-RUN git checkout v3.23.0
+ENV SLEPC_DIR=$LIBS/slepc
+RUN cd $LIBS && git clone https://gitlab.com/slepc/slepc slepc && cd $SLEPC_DIR && git checkout v3.23.0
 
 
 
 ### complex version
-RUN export PETSC_ARCH=petsc_complex
+ENV PETSC_ARCH=petsc_complex
 RUN cd $PETSC_DIR
 
 
-RUN ./configure --with-blaslapack-dir=$MKLROOT --with-scalar-type=complex  --COPTFLAGS=$OPTFLAGS --CXXOPTFLAGS=$OPTFLAGS --FOPTFLAGS=$OPTFLAGS --with-64-bit-indices --with-debugging=0 --with-fc=0 --with-cmake --with-openmp=1 --with-mpi=1 --with-mpicc=mpicc
+RUN cd $PETSC_DIR && ./configure --with-scalar-type=complex  --COPTFLAGS=$OPTFLAGS --CXXOPTFLAGS=$OPTFLAGS --FOPTFLAGS=$OPTFLAGS --with-64-bit-indices --with-debugging=0 --with-fc=0 --with-cmake --with-openmp=1 --with-mpi=1 --with-mpicc=mpicc && make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j $(nproc) && make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
-RUN make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j $(nproc)
-RUN make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
-
-RUN cd $SLEPC_DIR
-RUN ./configure   
-RUN make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j $(nproc)
-RUN make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
+RUN cd $SLEPC_DIR && ./configure && make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j $(nproc) && make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
 
 ### real version
-RUN export PETSC_ARCH=petsc_real
-RUN cd $PETSC_DIR
+ENV PETSC_ARCH=petsc_real
 
 
-RUN ./configure --with-blaslapack-dir=$MKLROOT --with-scalar-type=real  --COPTFLAGS=$OPTFLAGS --CXXOPTFLAGS=$OPTFLAGS --FOPTFLAGS=$OPTFLAGS --with-64-bit-indices --with-debugging=0 --with-fc=0 --with-cmake --with-openmp=1 --with-mpi=1 --with-mpicc=mpicc
+RUN cd $PETSC_DIR && ./configure --with-scalar-type=real  --COPTFLAGS=$OPTFLAGS --CXXOPTFLAGS=$OPTFLAGS --FOPTFLAGS=$OPTFLAGS --with-64-bit-indices --with-debugging=0 --with-fc=0 --with-cmake --with-openmp=1 --with-mpi=1 --with-mpicc=mpicc && make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j $(nproc) && make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check 
 
-RUN make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j $(nproc)
-RUN make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
-
-RUN cd $SLEPC_DIR
-RUN ./configure   
-RUN make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j $(nproc)
-RUN make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
+RUN cd $SLEPC_DIR && ./configure   && make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j $(nproc) && make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
 
 
