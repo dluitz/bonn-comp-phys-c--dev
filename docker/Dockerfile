@@ -6,6 +6,8 @@ ENV OPTFLAGS="-O3"
 ENV PETSC_DIR=$LIBS/petsc
 ENV SLEPC_DIR=$LIBS/slepc
 
+RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-12-backports.list
+
 # Install system packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gdb valgrind vim neovim git cmake wget curl \
@@ -13,6 +15,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-numpy python3-scipy python3-matplotlib python3-h5py \
     openmpi-bin libopenmpi-dev libc++-19-dev libomp-19-dev && \
     rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential autoconf automake libtool gdb
+
+RUN apt-get install openmpi-bin libopenmpi-dev -y
+RUN apt-get upgrade -y
+RUN apt-get update -y
+
 
 USER root
 
