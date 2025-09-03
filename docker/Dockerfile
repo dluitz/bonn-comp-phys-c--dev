@@ -8,20 +8,41 @@ ENV SLEPC_DIR=$LIBS/slepc
 
 RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-12-backports.list
 
-# Install system packages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gdb valgrind vim neovim git cmake wget curl \
-    libhdf5-dev h5utils hdf5-tools libgsl-dev libcatch2-dev parallel \
-    python3-numpy python3-scipy python3-matplotlib python3-h5py \
-    openmpi-bin libopenmpi-dev libc++-19-dev libomp-19-dev && \
-    rm -rf /var/lib/apt/lists/*
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential autoconf automake libtool gdb
-
-RUN apt-get install openmpi-bin libopenmpi-dev -y
 RUN apt-get upgrade -y
 RUN apt-get update -y
 
+
+RUN apt-get upgrade -y
+RUN apt-get update -y
+RUN apt-get install gdb -y
+RUN apt-get install cmake -y
+RUN apt-get install valgrind -y
+RUN apt-get install vim -y
+RUN apt-get install neovim -y
+RUN apt-get install git -y
+RUN apt-get install libc++-19-dev -y
+RUN apt-get install libhdf5-dev -y
+RUN apt-get install python3-numpy -y
+RUN apt-get install python3-scipy -y
+RUN apt-get install python3-matplotlib -y
+RUN apt-get install python3-h5py -y
+RUN apt-get install libomp-19-dev -y
+RUN apt-get install h5utils -y
+RUN apt-get install hdf5-tools -y
+RUN apt-get install hdf5-helpers -y
+RUN apt-get install libgsl-dev -y
+RUN apt-get install libcatch2-dev -y
+RUN apt-get install parallel -y
+# Install system packages
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     gdb valgrind vim neovim git cmake wget curl \
+#     libhdf5-dev h5utils hdf5-tools libgsl-dev libcatch2-dev parallel \
+#     python3-numpy python3-scipy python3-matplotlib python3-h5py \
+#     openmpi-bin libopenmpi-dev libc++-19-dev libomp-19-dev 
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     build-essential autoconf automake libtool gdb
+
+RUN apt-get install openmpi-bin libopenmpi-dev libc6-dev -y
 
 USER root
 
