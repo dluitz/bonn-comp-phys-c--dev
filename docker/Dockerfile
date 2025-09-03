@@ -6,7 +6,7 @@ ENV OPTFLAGS="-O3"
 ENV PETSC_DIR=$LIBS/petsc
 ENV SLEPC_DIR=$LIBS/slepc
 
-RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-12-backports.list
+# RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-12-backports.list
 
 RUN apt-get upgrade -y
 RUN apt-get update -y
@@ -15,6 +15,8 @@ RUN apt-get update -y
 RUN apt-get upgrade -y
 RUN apt-get update -y
 RUN apt-get install gdb -y
+RUN apt-get install gcc -y
+RUN apt-get install g++ -y
 RUN apt-get install cmake -y
 RUN apt-get install valgrind -y
 RUN apt-get install vim -y
@@ -46,6 +48,8 @@ RUN apt-get install parallel -y
 USER root
 
 # Install DMTCP
+RUN which gcc
+RUN whic g++
 RUN echo $LIBS/dmtcp
 RUN git clone https://github.com/dmtcp/dmtcp.git $LIBS/dmtcp 
 WORKDIR $LIBS/dmtcp  
