@@ -6,7 +6,7 @@ ENV OPTFLAGS="-O3"
 ENV PETSC_DIR=$LIBS/petsc
 ENV SLEPC_DIR=$LIBS/slepc
 
-# RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-12-backports.list
+RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-12-backports.list
 
 RUN apt-get upgrade -y
 RUN apt-get update -y
