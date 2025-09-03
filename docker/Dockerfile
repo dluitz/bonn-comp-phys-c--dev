@@ -28,7 +28,10 @@ USER root
 # Install DMTCP
 RUN echo $LIBS/dmtcp
 RUN git clone https://github.com/dmtcp/dmtcp.git $LIBS/dmtcp 
-RUN cd $LIBS/dmtcp && ./configure && make && make install
+WORKDIR $LIBS/dmtcp  
+RUN ./configure --verbose 
+RUN make 
+RUN make install
 
 # Install Eigen
 RUN mkdir -p $LIBS/Eigen && \
