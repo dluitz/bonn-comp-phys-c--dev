@@ -1,4 +1,4 @@
-FROM gcc:latest
+FROM gcc:15.1
 
 # Set environment variables
 ENV LIBS=/opt
