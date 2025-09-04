@@ -1,4 +1,4 @@
-FROM gcc:latest
+FROM gcc:15.1
 
 ## Additional packages
 RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-12-backports.list
