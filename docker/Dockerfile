@@ -75,7 +75,7 @@ RUN ./configure --with-scalar-type=complex \
                 --with-fc=0 \
                 --with-cmake \
                 --with-openmp=1 \
-                --download-mpi \
+                --download-openmpi \
                 --prefix=$PETSC_DIR/complex && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex all -j$(nproc) && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex check
@@ -97,7 +97,7 @@ RUN ./configure --with-scalar-type=real \
                 --with-fc=0 \
                 --with-cmake \
                 --with-openmp=1 \
-                --download-mpi \
+                --download-openmpi \
                 --prefix=$PETSC_DIR/real && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real all -j$(nproc) && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real check
