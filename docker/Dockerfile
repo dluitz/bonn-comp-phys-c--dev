@@ -23,6 +23,7 @@ RUN apt-get install hdf5-helpers -y
 RUN apt-get install libgsl-dev -y
 RUN apt-get install libcatch2-dev -y
 RUN apt-get install parallel -y
+RUN apt-get install -y libopenmpi-dev openmpi-bin openmpi-common 
 RUN git clone https://github.com/dmtcp/dmtcp.git /opt/dmtcp && \
     cd /opt/dmtcp && \
     ./configure && \
@@ -75,7 +76,7 @@ RUN ./configure --with-scalar-type=complex \
                 --with-fc=0 \
                 --with-cmake \
                 --with-openmp=1 \
-                --download-openmpi \
+                --with-mpi=1 \
                 --prefix=$PETSC_DIR/complex && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex all -j$(nproc) && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex check
@@ -97,7 +98,7 @@ RUN ./configure --with-scalar-type=real \
                 --with-fc=0 \
                 --with-cmake \
                 --with-openmp=1 \
-                --download-openmpi \
+                --with-mpi=1 \
                 --prefix=$PETSC_DIR/real && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real all -j$(nproc) && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real check
