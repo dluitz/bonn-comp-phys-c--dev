@@ -50,8 +50,68 @@ RUN cd /opt/HighFive/highfive && cmake --install build
 RUN rm -rf /opt/HighFive/highfive/.git
 
 
+ENV LIBS=/opt
+ENV OPTFLAGS="-O3"
+ENV PETSC_DIR=$LIBS/petsc
+ENV SLEPC_DIR=$LIBS/slepc
+
+# Clone PETSc
+RUN mkdir -p $LIBS && \
+    git clone -b release https://gitlab.com/petsc/petsc.git $PETSC_DIR && \
+    cd $PETSC_DIR && git checkout v3.23.4
+
+# Clone SLEPc
+RUN git clone https://gitlab.com/slepc/slepc $SLEPC_DIR && \
+    cd $SLEPC_DIR && git checkout v3.23.0
+
+# Build PETSc (complex)
+WORKDIR $PETSC_DIR
+RUN ./configure --with-scalar-type=complex \
+                --COPTFLAGS="$OPTFLAGS" \
+                --CXXOPTFLAGS="$OPTFLAGS" \
+                --FOPTFLAGS="$OPTFLAGS" \
+                --with-64-bit-indices \
+                --with-debugging=0 \
+                --with-fc=0 \
+                --with-cmake \
+                --with-openmp=1 \
+                --download-mpi \
+                --prefix=$PETSC_DIR/complex && \
+    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex all -j$(nproc) && \
+    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex check
+
+# Build SLEPc (complex)
+WORKDIR $SLEPC_DIR
+RUN ./configure --prefix=$SLEPC_DIR/complex && \
+    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex all -j$(nproc) && \
+    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex check
+
+# Build PETSc (real)
+WORKDIR $PETSC_DIR
+RUN ./configure --with-scalar-type=real \
+                --COPTFLAGS="$OPTFLAGS" \
+                --CXXOPTFLAGS="$OPTFLAGS" \
+                --FOPTFLAGS="$OPTFLAGS" \
+                --with-64-bit-indices \
+                --with-debugging=0 \
+                --with-fc=0 \
+                --with-cmake \
+                --with-openmp=1 \
+                --download-mpi \
+                --prefix=$PETSC_DIR/real && \
+    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real all -j$(nproc) && \
+    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real check
+
+# Build SLEPc (real)
+WORKDIR $SLEPC_DIR
+RUN ./configure --prefix=$SLEPC_DIR/real && \
+    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real all -j$(nproc) && \
+    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_real check
+
+
+
+
+
 RUN chown -R user:user /opt/*
 
 RUN chown -R user:user /home/user/
-
-
