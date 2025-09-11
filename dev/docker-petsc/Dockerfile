@@ -7,8 +7,7 @@ RUN apt-get update -y
 RUN apt-get install -y build-essential 
 RUN apt-get update && apt-get install -y gfortran-12 \
     && ln -s /usr/bin/gfortran-12 /usr/bin/gfortran \
-    && apt-get install -y libopenmpi-dev openmpi-bin openmpi-common \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y libopenmpi-dev openmpi-bin openmpi-common 
 
 # RUN apt-get install -y gfortran
 RUN apt-get install gdb -y
