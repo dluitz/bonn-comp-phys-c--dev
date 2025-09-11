@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     m4 \
     perl \
     pkg-config \
-    gfortran \
+    gfortran-15 \
     libopenblas-dev \
     liblapack-dev \
     openmpi-bin \
