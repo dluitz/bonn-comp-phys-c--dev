@@ -63,7 +63,7 @@ ENV LIBS=/opt
 ENV OPTFLAGS="-O3"
 ENV PETSC_DIR=$LIBS/petsc
 ENV SLEPC_DIR=$LIBS/slepc
-
+ENV PETSC_ARCH=complex
 
 
 # Clone PETSc
@@ -87,15 +87,15 @@ RUN ./configure --with-scalar-type=complex \
                 --with-cmake \
                 --with-openmp=1 \
                 --with-mpi=1 \
-                --prefix=$PETSC_DIR/complex && \
-    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex all -j$(nproc) && \
-    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex check
+                --prefix=$PETSC_DIR/$PETSC_ARCH && \
+    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) && \
+    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
 # Build SLEPc (complex)
 WORKDIR $SLEPC_DIR
 RUN ./configure --prefix=$SLEPC_DIR/complex && \
-    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex all -j$(nproc) && \
-    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=petsc_complex check
+    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) && \
+    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
 # # Build PETSc (real)
 # WORKDIR $PETSC_DIR
