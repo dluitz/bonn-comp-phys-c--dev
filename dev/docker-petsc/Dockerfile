@@ -4,7 +4,11 @@ FROM gcc:15.1
 RUN echo "deb http://deb.debian.org/debian bookworm-backports main" >> /etc/apt/sources.list.d/debian-12-backports.list
 RUN apt-get upgrade -y
 RUN apt-get update -y
-RUN apt-get install -y build-essential gfortran-12
+RUN apt-get install -y build-essential 
+RUN apt-get update && apt-get install -y gfortran-12 \
+    && ln -s /usr/bin/gfortran-12 /usr/bin/gfortran \
+    && apt-get install -y libopenmpi-dev openmpi-bin openmpi-common \
+    && rm -rf /var/lib/apt/lists/*
 
 # RUN apt-get install -y gfortran
 RUN apt-get install gdb -y
