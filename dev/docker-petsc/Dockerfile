@@ -126,4 +126,5 @@ RUN ./configure  && \
 
 RUN chown -R user:user /opt/*
 RUN chown -R user:user /home/user/
+USER user
 
