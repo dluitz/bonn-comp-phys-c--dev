@@ -1,4 +1,3 @@
-# syntax=docker/dockerfile:1
 FROM gcc:15 as builder
 
 ARG PETSC_REPO=https://gitlab.com/petsc/petsc.git
@@ -12,7 +11,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PETSC_ARCH=arch-linux-c-opt \
     SLEPC_DIR=${SLEPC_PREFIX}
 
-# Install dependencies
+# Install dependencies (no gfortran)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     wget \
@@ -23,7 +22,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     m4 \
     perl \
     pkg-config \
-    gfortran-15 \
     libopenblas-dev \
     liblapack-dev \
     openmpi-bin \
@@ -40,7 +38,7 @@ RUN ./configure \
     --prefix=${PETSC_PREFIX} \
     --with-cc=mpicc \
     --with-cxx=mpicxx \
-    --with-fc=mpifort \
+    --with-fc=0 \
     --with-mpi=1 \
     --with-scalar-type=complex \
     --with-shared-libraries=1 \
@@ -63,7 +61,7 @@ RUN ./configure \
     --with-scalar-type=complex \
     --with-shared-libraries=1 \
     --with-debugging=0 \
-    CC=mpicc CXX=mpicxx FC=mpifort \
+    CC=mpicc CXX=mpicxx \
     && ${MAKEFLAGS:+make $MAKEFLAGS} all \
     && make install
 
@@ -71,7 +69,7 @@ ENV PATH=${SLEPC_PREFIX}/bin:${PATH} \
     LD_LIBRARY_PATH=${SLEPC_PREFIX}/lib:${LD_LIBRARY_PATH}
 
 # --- Runtime image ---
-FROM debian:stable-slim
+FROM gcc:15-slim
 
 ARG PETSC_PREFIX=/opt/petsc
 ARG SLEPC_PREFIX=/opt/slepc
@@ -79,7 +77,6 @@ ARG SLEPC_PREFIX=/opt/slepc
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libopenblas0 \
     liblapack3 \
-    libgfortran5 \
     openmpi-bin \
     libopenmpi40 \
     ca-certificates \
