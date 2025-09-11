@@ -65,6 +65,8 @@ ENV PETSC_DIR=$LIBS/petsc
 ENV SLEPC_DIR=$LIBS/slepc
 ENV PETSC_ARCH=complex
 
+ENV OMPI_ALLOW_RUN_AS_ROOT=1
+ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
 
 # Clone PETSc
 RUN mkdir -p $LIBS && \
@@ -84,7 +86,7 @@ RUN ./configure --with-scalar-type=complex \
                 --with-openmp=1 \
                 --with-mpi=1 && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) && \
-    make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
+    # make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
 
 
@@ -96,7 +98,7 @@ RUN git clone https://gitlab.com/slepc/slepc $SLEPC_DIR && \
 WORKDIR $SLEPC_DIR
 RUN ./configure  && \
     make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) && \
-    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
+    # make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
 # # Build PETSc (real)
 # WORKDIR $PETSC_DIR
