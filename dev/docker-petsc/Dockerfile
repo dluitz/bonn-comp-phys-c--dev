@@ -68,9 +68,6 @@ RUN ./configure \
 ENV PATH=${SLEPC_PREFIX}/bin:${PATH} \
     LD_LIBRARY_PATH=${SLEPC_PREFIX}/lib:${LD_LIBRARY_PATH}
 
-# --- Runtime image ---
-FROM gcc:15-slim
-
 ARG PETSC_PREFIX=/opt/petsc
 ARG SLEPC_PREFIX=/opt/slepc
 
@@ -81,9 +78,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libopenmpi40 \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
-
-COPY --from=builder ${PETSC_PREFIX} ${PETSC_PREFIX}
-COPY --from=builder ${SLEPC_PREFIX} ${SLEPC_PREFIX}
 
 ENV PETSC_DIR=${PETSC_PREFIX} \
     PETSC_ARCH=arch-linux-c-opt \
