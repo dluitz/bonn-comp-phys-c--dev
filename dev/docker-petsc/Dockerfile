@@ -81,7 +81,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     liblapack3 \
     libgfortran5 \
     openmpi-bin \
-    libopenmpi3 \
+    libopenmpi40 \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
