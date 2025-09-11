@@ -87,13 +87,13 @@ RUN ./configure --with-scalar-type=complex \
                 --with-cmake \
                 --with-openmp=1 \
                 --with-mpi=1 \
-                --prefix=$PETSC_DIR/$PETSC_ARCH && \
+                --prefix=$PETSC_DIR/ && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
 # Build SLEPc (complex)
 WORKDIR $SLEPC_DIR
-RUN ./configure --prefix=$SLEPC_DIR/complex && \
+RUN ./configure --prefix=$SLEPC_DIR/ && \
     make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) && \
     make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
