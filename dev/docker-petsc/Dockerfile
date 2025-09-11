@@ -96,8 +96,7 @@ RUN git clone https://gitlab.com/slepc/slepc $SLEPC_DIR && \
 
 # Build SLEPc (complex)
 WORKDIR $SLEPC_DIR
-RUN ./configure  && \
-    make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) && \
+RUN ./configure  && make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) 
     # make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
 # # Build PETSc (real)
