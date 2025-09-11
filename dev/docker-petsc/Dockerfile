@@ -71,10 +71,6 @@ RUN mkdir -p $LIBS && \
     git clone -b release https://gitlab.com/petsc/petsc.git $PETSC_DIR && \
     cd $PETSC_DIR && git checkout v3.23.4
 
-# Clone SLEPc
-RUN git clone https://gitlab.com/slepc/slepc $SLEPC_DIR && \
-    cd $SLEPC_DIR && git checkout v3.23.0
-
 # Build PETSc (complex)
 WORKDIR $PETSC_DIR
 RUN ./configure --with-scalar-type=complex \
@@ -86,14 +82,19 @@ RUN ./configure --with-scalar-type=complex \
                 --with-fc=0 \
                 --with-cmake \
                 --with-openmp=1 \
-                --with-mpi=1 \
-                --prefix=$PETSC_DIR/ && \
+                --with-mpi=1 && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) && \
     make PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
+
+
+# Clone SLEPc
+RUN git clone https://gitlab.com/slepc/slepc $SLEPC_DIR && \
+    cd $SLEPC_DIR && git checkout v3.23.0
+
 # Build SLEPc (complex)
 WORKDIR $SLEPC_DIR
-RUN ./configure --prefix=$SLEPC_DIR/ && \
+RUN ./configure  && \
     make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH all -j$(nproc) && \
     make SLEPC_DIR=$SLEPC_DIR PETSC_DIR=$PETSC_DIR PETSC_ARCH=$PETSC_ARCH check
 
